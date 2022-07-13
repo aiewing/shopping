@@ -56,14 +56,3 @@ func (this *Repository) GetAll(pageIndex, pageSize int) ([]Category, int) {
 
 	return categories, int(count)
 }
-
-// 生成商品分类测试数据
-func (this *Repository) InsertSampleData() {
-	categories := []Category{
-		{Name: "Cat", Desc: "Category cat"},
-		{Name: "Dog", Desc: "Category dog"},
-	}
-	for _, cate := range categories {
-		this.db.Where(Category{Name: cate.Name}).Attrs(Category{Name: cate.Name}).FirstOrCreate(&cate)
-	}
-}

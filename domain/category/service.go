@@ -14,8 +14,6 @@ type Service struct {
 func NewCategoryService(repo Repository) *Service {
 	// 生成表
 	repo.Migration()
-	// 插入测试数据
-	repo.InsertSampleData()
 	return &Service{
 		repo: repo,
 	}

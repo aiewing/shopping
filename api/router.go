@@ -69,7 +69,7 @@ func RegisterUserHandlers(engine *gin.Engine, dbs DataBases) {
 	userService := user.NewUserService(*dbs.userRepo)
 	userController := userApi.NewUserController(userService, AppConfig)
 	userGroup := engine.Group("/user")
-	userGroup.POST("", userController.CreateUser)
+	userGroup.POST("/register", userController.CreateUser)
 	userGroup.POST("/login", userController.Login)
 }
 
@@ -79,8 +79,8 @@ func RegisterCategoryHandlers(engine *gin.Engine, dbs DataBases) {
 	categoryController := categoryApi.NewCategoryController(categoryService)
 	categoryGroup := engine.Group("/category")
 	categoryGroup.POST(
-		"", middleware.AuthAdminMiddleware(AppConfig.JwtSettings.SecretKey), categoryController.CreateCategory)
-	categoryGroup.GET("", categoryController.GetCategories)
+		"/create", middleware.AuthUserMiddleware(AppConfig.JwtSettings.SecretKey), categoryController.CreateCategory)
+	categoryGroup.GET("list", categoryController.GetCategories)
 	categoryGroup.POST(
 		"/upload", middleware.AuthAdminMiddleware(AppConfig.JwtSettings.SecretKey),
 		categoryController.BulkCreateCategory)
@@ -101,13 +101,13 @@ func RegisterProductHandlers(engine *gin.Engine, dbs DataBases) {
 	productService := product.NewService(*dbs.productRepo)
 	productController := productApi.NewProductController(*productService)
 	productGroup := engine.Group("/product")
-	productGroup.GET("", productController.GetProducts)
+	productGroup.GET("list", productController.GetProducts)
 	productGroup.POST(
-		"", middleware.AuthAdminMiddleware(AppConfig.JwtSettings.SecretKey), productController.CreateProduct)
-	productGroup.DELETE(
-		"", middleware.AuthAdminMiddleware(AppConfig.JwtSettings.SecretKey), productController.DeleteProduct)
-	productGroup.PATCH(
-		"", middleware.AuthAdminMiddleware(AppConfig.JwtSettings.SecretKey), productController.UpdateProduct)
+		"create", middleware.AuthUserMiddleware(AppConfig.JwtSettings.SecretKey), productController.CreateProduct)
+	productGroup.POST(
+		"delete", middleware.AuthUserMiddleware(AppConfig.JwtSettings.SecretKey), productController.DeleteProduct)
+	productGroup.POST(
+		"update", middleware.AuthUserMiddleware(AppConfig.JwtSettings.SecretKey), productController.UpdateProduct)
 
 }
 

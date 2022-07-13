@@ -9,7 +9,6 @@ type Service struct {
 // 实例化service
 func NewUserService(repo Repository) *Service {
 	repo.Migration()
-	repo.InsertSampleData()
 	return &Service{
 		repo: repo,
 	}
@@ -19,18 +18,18 @@ func NewUserService(repo Repository) *Service {
 func (this *Service) Create(user *User) error {
 
 	// 无效用户名
-	if ValidateUserName(user.Username) {
+	if ValidateUserName(user.Username) == false {
 		return ErrorUsernameInvalid
 	}
 
 	// 无效密码
-	if ValidatePassword(user.Password) {
+	if ValidatePassword(user.Password) == false {
 		return ErrorPasswordError
 	}
 
 	// 用户名已经存在
 	_, err := this.repo.GetByName(user.Username)
-	if err != nil {
+	if err == nil {
 		return ErrorUserExistWithName
 	}
 
@@ -48,7 +47,7 @@ func (this *Service) GetUser(username string, password string) (User, error) {
 
 	match := hash.CheckPasswordHash(password+user.Salt, user.Password)
 	if !match {
-		return User{}, ErrorUserNotFound
+		return User{}, ErrorPasswordError
 	}
 	return user, nil
 }

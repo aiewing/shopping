@@ -8,7 +8,7 @@ import (
 
 var (
 	// 默认页数
-	DefaultPageSize = 100
+	DefaultPageSize = 5
 	// 最大页数
 	MaxPageSize = 1000
 	// 查询参数名称

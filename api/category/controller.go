@@ -29,6 +29,11 @@ func (this *Controller) CreateCategory(g *gin.Context) {
 		return
 	}
 
+	if req.Name == "" || req.Desc == "" {
+		api_helper.HandleError(g, api_helper.ErrorInvalidBody)
+		return
+	}
+
 	newCategory := category.NewCategory(req.Name, req.Desc)
 	err = this.cateService.Create(newCategory)
 	if err != nil {

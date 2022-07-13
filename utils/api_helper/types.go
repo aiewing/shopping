@@ -14,5 +14,5 @@ type ErrorResponse struct {
 
 // 自定义错误
 var (
-	ErrorInvalidBody = errors.New("请检查你的请求体")
+	ErrorInvalidBody = errors.New("参数错误")
 )
