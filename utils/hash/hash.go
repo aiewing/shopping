@@ -33,3 +33,12 @@ func CheckPasswordHash(password string, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
 }
+
+// 创建SKU
+func CreateSKU() string {
+	bytes := make([]byte, bcrypt.MaxCost)
+	for i := range bytes {
+		bytes[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(bytes)
+}

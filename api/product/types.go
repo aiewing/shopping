@@ -7,7 +7,7 @@ type CreateProductRequest struct {
 	Name       string  `json:"name"`
 	Desc       string  `json:"desc"`
 	Price      float32 `json:"price"`
-	Count      int     `json:"count"`
+	StockCount int     `json:"stockCount"`
 	CategoryID uint    `json:"categoryID"`
 }
 
@@ -27,11 +27,18 @@ type UpdateProductRequest struct {
 	Name       string  `json:"name"`
 	Desc       string  `json:"desc"`
 	Price      float32 `json:"price"`
-	Count      int     `json:"count"`
+	StockCount int     `json:"stockCount"`
 	CategoryID uint    `json:"categoryID"`
 }
 
 // 类型转换 UpdateProductRequest to Product
 func (p *UpdateProductRequest) ToProduct() product.Product {
-	return *product.NewProduct(p.Name, p.Desc, p.Count, p.Price, p.CategoryID)
+	return product.Product{
+		Name:       p.Name,
+		SKU:        p.SKU,
+		Desc:       p.Desc,
+		StockCount: p.StockCount,
+		Price:      p.Price,
+		CategoryID: p.CategoryID,
+	}
 }

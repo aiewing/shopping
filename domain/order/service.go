@@ -39,7 +39,7 @@ func NewService(
 }
 
 // 完成订单
-func (this *Service) CompleteOrder(userId uint) error {
+func (this *Service) CreateOrder(userId uint) error {
 	// 查询购物车
 	currentCart, err := this.cartRepo.FindOrCreateByUserId(userId)
 	if err != nil {
@@ -47,7 +47,7 @@ func (this *Service) CompleteOrder(userId uint) error {
 	}
 
 	// 获取购物车中所有的内容
-	cartItems, err := this.cartItemRepo.GetAllItems(currentCart.UserID)
+	cartItems, err := this.cartItemRepo.GetAllItems(currentCart.ID)
 	if err != nil {
 		return err
 	}

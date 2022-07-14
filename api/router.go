@@ -91,9 +91,9 @@ func RegisterCartHandlers(engine *gin.Engine, dbs DataBases) {
 	cartService := cart.NewService(*dbs.cartRepo, *dbs.cartItemRepo, *dbs.productRepo)
 	cartController := cartApi.NewCartController(cartService)
 	cartGroup := engine.Group("/cart", middleware.AuthUserMiddleware(AppConfig.JwtSettings.SecretKey))
-	cartGroup.POST("/item", cartController.AddItem)
-	cartGroup.PATCH("/item", cartController.UpdateItem)
-	cartGroup.GET("/", cartController.GetCart)
+	cartGroup.POST("/addItem", cartController.AddItem)
+	cartGroup.POST("/updateItem", cartController.UpdateItem)
+	cartGroup.GET("/list", cartController.GetCart)
 }
 
 // 注册商品控制器
@@ -118,7 +118,7 @@ func RegisterOrderHandlers(engine *gin.Engine, dbs DataBases) {
 		*dbs.cartItemRepo)
 	productController := orderApi.NewOrderController(orderService)
 	orderGroup := engine.Group("/order", middleware.AuthUserMiddleware(AppConfig.JwtSettings.SecretKey))
-	orderGroup.POST("", productController.CompleteOrder)
-	orderGroup.DELETE("", productController.CancelOrder)
-	orderGroup.GET("", productController.GetOrders)
+	orderGroup.POST("create", productController.CreateOrder)
+	orderGroup.POST("cancel", productController.CancelOrder)
+	orderGroup.GET("list", productController.GetOrders)
 }

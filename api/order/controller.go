@@ -20,10 +20,10 @@ func NewOrderController(orderService *order.Service) *Controller {
 }
 
 // 完成订单
-func (this *Controller) CompleteOrder(g *gin.Context) {
+func (this *Controller) CreateOrder(g *gin.Context) {
 	userId := api_helper.GetUserId(g)
 
-	err := this.orderService.CompleteOrder(userId)
+	err := this.orderService.CreateOrder(userId)
 	if err != nil {
 		api_helper.HandleError(g, err)
 		return

@@ -40,7 +40,7 @@ func (this *Controller) CreateProduct(g *gin.Context) {
 		return
 	}
 
-	err := this.productService.CreateProduct(req.Name, req.Desc, req.Count, req.Price, req.CategoryID)
+	err := this.productService.CreateProduct(req.Name, req.Desc, req.StockCount, req.Price, req.CategoryID)
 	if err != nil {
 		api_helper.HandleError(g, err)
 		return
