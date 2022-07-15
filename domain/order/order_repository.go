@@ -52,9 +52,13 @@ func (this *OrderRepository) GetAll(pageIndex, pageSize int, uid uint) ([]Order,
 		"UserID", uid).Offset((pageIndex - 1) * pageSize).Limit(pageSize).Find(&orders).Count(&count)
 	for i, order := range orders {
 		this.db.Where("OrderID = ?", order.ID).Find(&orders[i].OrderedItems)
+		// 计算总价格
+		var totalPrice float32 = 0.0
 		for j, item := range orders[i].OrderedItems {
 			this.db.Where("ID = ?", item.ProductID).First(&orders[i].OrderedItems[j].Product)
+			totalPrice += orders[i].OrderedItems[j].Product.Price * float32(orders[i].OrderedItems[j].Count)
 		}
+		orders[i].TotalPrice = totalPrice
 	}
 	return orders, int(count)
 }

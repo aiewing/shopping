@@ -20,7 +20,7 @@ func main() {
 	api.RegisterHandlers(engine)
 	engine.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	srv := &http.Server{
-		Addr:    ":8080",
+		Addr:    ":9002",
 		Handler: engine,
 	}
 

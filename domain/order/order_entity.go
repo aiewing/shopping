@@ -19,7 +19,7 @@ type Order struct {
 func NewOrder(uid uint, items []OrderedItem) *Order {
 	var totalPrice float32 = 0.0
 	for _, item := range items {
-		totalPrice += item.Product.Price
+		totalPrice += item.Product.Price * float32(item.Count)
 	}
 	return &Order{
 		UserID:       uid,
